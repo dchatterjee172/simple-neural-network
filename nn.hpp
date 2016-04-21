@@ -45,7 +45,7 @@ class network{
 			srand(time(0));
 			for(int i=0;i<inputn;i++){
 				for(int j=0;j<hiddenn;j++){
-					weighthid[i][j]=-0.2+(rand()/(double)RAND_MAX)*(.2+.2);
+					weighthid[i][j]=-1+(rand()/(double)RAND_MAX)*(1+1);
 				}
 			}
 			for(int i=0;i<hiddenn;i++){
@@ -96,7 +96,11 @@ class network{
 				cout<<"output "<<i<<"= "<<actout[i][0]<<endl;
 			}
 		}
-		double** update(double *mat){
+		double** update(double *mat,int matlen){
+			if(matlen!=inputn-1){
+				
+				exit(0);	
+			}
 			for(int i=0;i<inputn-1;i++)
 				actin[i][0]=mat[i];
 			actin[inputn-1][0]=1;
@@ -117,7 +121,10 @@ class network{
 			}
 			return actout;
 		}
-		void backprop(float lrate,float momentum,double *target){
+		void backprop(float lrate,float momentum,double *target,int targetlen){
+			if (targetlen!=outputn){
+				exit(0);
+			}
 			for(int i=0;i<outputn;i++){
 				outputdelta[i][0]=(target[i]-actout[i][0])*dactf(actout[i][0]);
 			}
@@ -143,12 +150,12 @@ class network{
 				}
 			}
 		}
-		void training(double **mat,double **target,int it,float lrate,float momntm){
+		void training(double *mat,double *target,int matlen,int targetlen,int it,float lrate,float momntm){
 			for(int i=0;i<it;i++){
 				//cout<<it<<endl;
 				for(int j=0;j<1;j++){
-					this->update(mat[j]);
-					this->backprop(lrate,momntm,target[j]);
+					this->update(mat,matlen);
+					this->backprop(lrate,momntm,target,targetlen);
 					//this->debug_out();
 				}
 				cout<<endl;
