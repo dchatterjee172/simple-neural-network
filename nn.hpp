@@ -75,6 +75,38 @@ class network{
 			memfree(wchhidden,inputn);
 			memfree(wchoutput,hiddenn);
 		}
+		void save(){
+			fstream savefile;
+			savefile.open("weights.dat",ios::out);
+			for(int i=0;i<inputn;i++){
+				for(int j=0;j<hiddenn;j++){
+					savefile<<weighthid[i][j]<<" ";
+				}
+			}
+			savefile<<"\n";
+			for(int i=0;i<hiddenn;i++){
+				for(int j=0;j<outputn;j++){
+					savefile<<weightout[i][j]<<" ";
+				}
+			}
+			savefile.close();
+			
+		}
+		void load(){
+			fstream savefile;
+			savefile.open("weights.dat",ios::in);
+			for(int i=0;i<inputn;i++){
+				for(int j=0;j<hiddenn;j++){
+					savefile>>weighthid[i][j];
+				}
+			}
+			for(int i=0;i<hiddenn;i++){
+				for(int j=0;j<outputn;j++){
+					savefile>>weightout[i][j];
+				}
+			}
+			
+		}
 		void debug_out(){
 			/*for (int i=0;i<inputn;i++){
 				cout<<"input "<<i<<"= "<<actin[i][0]<<endl;
